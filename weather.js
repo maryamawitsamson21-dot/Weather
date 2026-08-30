@@ -75,7 +75,7 @@ else if (weatherType === "Rain") {
     type.src="/rain.png";
 }
 else{
-    type.src= "img.png/search_9373594.png";
+    type.src= "https://openweathermap.org";
 }localStorage.setItem( "weatherType", weatherType )
 localStorage.setItem( "file",type.src  )
 }catch(error){
