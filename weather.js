@@ -1,3 +1,4 @@
+const input=document.getElementById("input")
 const date=document.getElementById("date");
 const cityhtml=document.getElementById("cityhtml");
 const img=document.getElementById("img")
@@ -5,9 +6,9 @@ const deg=document.getElementById("deg")
 const high=document.getElementById("high");
 const lows=document.getElementById("lows");
 const type=document.getElementById("type");
-high.innerHTML=localStorage.getItem("max")+ " °C";
-lows.innerHTML=localStorage.getItem("min")+ " °C";
-deg.innerHTML=localStorage.getItem("temp")+ " °C";
+high.innerHTML=localStorage.getItem("max")?localStorage.getItem("max")+ " °C":"";
+lows.innerHTML=localStorage.getItem("min")?localStorage.getItem("min")+ " °C":"";
+deg.innerHTML=localStorage.getItem("temp")?localStorage.getItem("temp")+ " °C":"";
 cityhtml.textContent=localStorage.getItem("city");
 
 type.src=localStorage.getItem("file");
@@ -31,21 +32,38 @@ img.addEventListener("click",function(e){
 })
 async function search(){
     try{
-    const apiKey=`d8e219e82c08a39eec93e6c4dacabe61`
+   
 cityhtml.textContent=input.value;
 const city=input.value;
 localStorage.setItem("city",city)
-const temp1=await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`);
+const temp1=await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${import.meta.env.VITE_APIKEY}&units=metric`);
+if(!temp1.ok){
+    deg.textContent="City not found"
+    high.textContent=""
+     lows.textContent=""
+        localStorage.setItem( "city",""  )
+     localStorage.setItem( "min",""  )
+     localStorage.setItem( "max",""  )
+       localStorage.setItem( "file",""  )
+         localStorage.setItem( "temp",""  )
+           localStorage.setItem( "weatherType",""  )
+     
+     type.src=""
+    return
+}
 const json=await temp1.json();
 const temp=json.main.temp ;
-localStorage.setItem("temp",JSON.stringify(temp)   )
-deg.innerHTML=localStorage.getItem("temp")+ " °C";
+localStorage.setItem("temp",JSON.stringify(temp)||""   )
+if(!localStorage.getItem("temp")||localStorage.getItem("temp")==="null"){deg.innerHTML="";}
+else {deg.innerHTML=localStorage.getItem("temp")+ " °C";}
 const max=json.main.temp_max ;
-localStorage.setItem( "max",max  )
-high.innerHTML=localStorage.getItem("max")+ " °C";
+localStorage.setItem( "max",max ||""  )
+if(!localStorage.getItem("max")||localStorage.getItem("max")==="null"){high.innerHTML="";}
+else{high.innerHTML=localStorage.getItem("max")+ " °C";}
 const min=json.main.temp_min ;
-localStorage.setItem( "min",min  )
-lows.innerHTML=localStorage.getItem("min")+ " °C";
+localStorage.setItem( "min",min||""   )
+if(!localStorage.getItem("min")||localStorage.getItem("min")==="null"){lows.innerHTML="";}
+else{lows.innerHTML=localStorage.getItem("min")+ " °C";}
 const weatherType = json.weather[0].main;
 
 if (weatherType === "Clear"){
