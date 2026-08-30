@@ -67,12 +67,12 @@ else{lows.innerHTML=localStorage.getItem("min")+ " °C";}
 const weatherType = json.weather[0].main;
 
 if (weatherType === "Clear"){
-   type.src="./sun.jpeg";}
+   type.src="./allimage/sun.jpeg";}
  else if (weatherType === "Clouds") {
-    type.src="./cloud.png";
+    type.src="./allimage/cloud.png";
 }
 else if (weatherType === "Rain") {
-    type.src="./rain.png";
+    type.src="./allimage/rain.png";
 }
 else{
     type.src= "img.png/search_9373594.png";
